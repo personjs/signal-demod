@@ -34,8 +34,7 @@ RUN mkdir -p /app/data
 # ✅ Set ownership to demod user
 RUN chown -R demod:demod /app
 
-# Use non-root user
-# USER demod
+ENV DB_DSN=data/signal-demod.db
 
 EXPOSE 8080
 
