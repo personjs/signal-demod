@@ -28,7 +28,7 @@ go build -o signal-demod ./cmd/main
 ### Docker run:
 
 ```bash
-docker run --rm \
+docker run \
 --device /dev/bus/usb:/dev/bus/usb \
 --name signal-demod \
 --volume /data/signal-demod:/app/data \
