@@ -2,9 +2,8 @@
 /bin/
 /build/
 /dist/
-adsb
-adsb.exe
-adsb-demod
+signal-demod
+signal-demod.exe
 
 # Runtime data
 *.db
@@ -18,8 +17,8 @@ vendor/
 *.test
 
 # Dependency directories
-/go.sum
-/go.mod
+/go.run
+/go.output
 
 # IDE/editor files
 .vscode/
