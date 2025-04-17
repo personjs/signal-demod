@@ -1,0 +1,48 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main          # trigger on main branch push
+    tags:
+      - 'v*'          # trigger on tags like v1.0.0
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧾 Checkout source
+        uses: actions/checkout@v3
+
+      - name: 🐳 Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: 🔐 Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: 🏷️ Set image tags
+        id: meta
+        run: |
+          IMAGE_NAME=docker.io/yunostove/signal-demod
+
+          # Default to "latest"
+          TAGS="${IMAGE_NAME}:latest"
+
+          # Add version tag if this is a tag push (v1.2.0, etc)
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION_TAG="${GITHUB_REF#refs/tags/}"
+            TAGS="$TAGS,${IMAGE_NAME}:${VERSION_TAG}"
+          fi
+
+          echo "tags=${TAGS}" >> $GITHUB_OUTPUT
+
+      - name: 🛠️ Build and push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
