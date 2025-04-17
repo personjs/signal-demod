@@ -1,0 +1,11 @@
+services:
+  signal-demod:
+    build: .
+    image: signal-demod
+    container_name: signal-demod
+    devices:
+      - "/dev/bus/usb:/dev/bus/usb"
+    # volumes:
+    #   - ./data:/app/data
+    ports:
+      - "8080:8080" # websocket port

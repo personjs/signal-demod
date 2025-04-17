@@ -1,0 +1,58 @@
+# Go build output
+/bin/
+/build/
+/dist/
+adsb
+adsb.exe
+adsb-demod
+
+# Runtime data
+*.db
+/data/
+*.log
+*.out
+*.pid
+
+# Go module files (local cache)
+vendor/
+*.test
+
+# Dependency directories
+/go.sum
+/go.mod
+
+# IDE/editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*.swn
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Docker artifacts
+*.tar
+docker-compose.override.yml
+.env
+.env.*
+
+# Node/npm assets (if frontend exists)
+node_modules/
+*.tsbuildinfo
+*.lock
+public/build/
+.svelte-kit/
+dist/
+
+# Logs
+logs/
+*.log
+
+# Coverage/testing
+coverage.*
+*.coverprofile
+
+# GORM auto-migrations (if dumped)
+migrations/
