@@ -6,6 +6,7 @@ import (
 	"github.com/personjs/signal-demod/internal/sdr"
 	"github.com/personjs/signal-demod/internal/services"
 	"github.com/personjs/signal-demod/internal/websocket"
+	"github.com/personjs/signal-demod/internal/models"
 )
 
 const (
@@ -59,8 +60,11 @@ func Run(samples <-chan complex64, hub *websocket.Hub) {
 					// Holy shit I got one!
 					services.Logger.Info().Msgf("✈️ %s", msg)
 					services.DB.Create(msg)
-					jsonMsg, _ := json.Marshal(msg)
-					hub.Broadcast(jsonMsg)
+
+					// Convert to plane and broadcast
+					plane := models.ToPlane(msg)
+					data, _ := json.Marshal(plane)
+					hub.Broadcast(data)
 				}
 
 				// Print stats every 50 messages

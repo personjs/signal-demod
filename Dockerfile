@@ -1,42 +1,23 @@
-FROM golang:1.24-bookworm AS builder
+# Stage 1: Build npm app
+FROM node:lts-alpine as builder
+
+WORKDIR /app
+COPY frontend/ ./
+RUN npm install && npm run build
+
+# Stage 2: Serve with Go
+FROM golang:1.24-bookworm AS server
 
 RUN apt-get update \
 && apt-get install -y git build-essential pkg-config librtlsdr-dev libusb-1.0-0-dev
 
 WORKDIR /app
+COPY go-server/ .
+COPY --from=builder /app/dist ./public
 
-# Cache dependencies
-COPY go.mod go.sum ./
-RUN go mod download
-
-# Copy source and build
-COPY . .
-RUN go build -o signal-demod ./cmd/main
-
-FROM debian:bookworm-slim
-
-# Install minimal dependencies
-RUN apt-get update \
-&& apt-get install -y librtlsdr0 libusb-1.0-0 ca-certificates tzdata \
-&& rm -rf /var/lib/apt/lists/*
-
-WORKDIR /app
-
-# 👤 Create non-root user
-RUN useradd --system --create-home --shell /usr/sbin/nologin demod
-
-# Copy binary and default data location
-COPY --from=builder /app/signal-demod .
-
-# Ensure data dir exists for SQLite
-RUN mkdir -p /app/data
-
-# ✅ Set ownership to demod user
-RUN chown -R demod:demod /app
-
-ENV DB_DSN=data/signal-demod.db
+RUN go build -o server ./cmd/main
 
 EXPOSE 8080
+EXPOSE 8081
 
-CMD ["./signal-demod", "run", "adsb"]
-    
+CMD ["./server", "run", "adsb"]

@@ -1,3 +1,4 @@
-.devcontainer/
-signal-demod
+frontend/node_modules/
+*.tar
 *.db
+*.log

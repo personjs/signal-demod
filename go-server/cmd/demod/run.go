@@ -21,7 +21,7 @@ var runCmd = &cobra.Command{
 			// Websocket
 			hub := websocket.NewHub()
 			go hub.Run()
-			go websocket.Start(":8080", hub)
+			go websocket.Start(":8081", hub)
 
 			// Signal
 			samples := make(chan complex64, 8192)
