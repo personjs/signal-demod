@@ -33,5 +33,6 @@ docker run \
 --name signal-demod \
 --volume /data/signal-demod:/app/data \
 --publish 8080:8080 \
+--publish 8081:8081 \
 -it yunostove/signal-demod
 ```
