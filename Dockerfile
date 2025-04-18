@@ -15,7 +15,10 @@ WORKDIR /app
 COPY go-server/ .
 COPY --from=builder /app/dist ./public
 
-RUN go build -o server ./cmd/main
+RUN go build -o server ./cmd/main \
+&& mkdir -p /app/data
+
+ENV DB_DSN=/app/data/data.db 
 
 EXPOSE 8080
 EXPOSE 8081
