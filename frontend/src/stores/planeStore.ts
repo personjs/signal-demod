@@ -22,11 +22,10 @@ export function updatePlane(id: string, newData: Partial<Plane>) {
       timestamp: ''
     };
 
-    if (newData.type !== "Airborne Position") {
-      newData.latitude = round4(existing.latitude);
-      newData.longitude = round4(existing.longitude);
-      newData.speed = existing.speed;
-    }
+    if (newData.latitude)
+      newData.latitude = round4(newData.latitude)
+    if (newData.longitude)
+      newData.longitude = round4(newData.longitude)
 
 
     const updated = { ...existing, ...newData, id };

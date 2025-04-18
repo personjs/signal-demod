@@ -6,9 +6,8 @@ export function updateTrack(
   map: L.Map,
   trails: Map<string, [number, number][]>,
   polylines: Map<string, L.Polyline>,
-  maxLength: number = 50,
+  maxLength: number = 5,
 ) {
-  const trackLinesLayer = L.layerGroup();
   const trail = trails.get(id) ?? [];
   trail.push(position);
   if (trail.length > maxLength) trail.shift();
